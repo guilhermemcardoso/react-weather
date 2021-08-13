@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { GetLocationWeather } from "../../../domain/usecases/get-location-weather";
 import { LocationWeather } from "../../../domain/models/location-weather";
+import { SearchLocation } from "../../../domain/usecases/search-location";
 
 type Props = {
   getLocationWeather: GetLocationWeather;
+  searchLocation: SearchLocation
 };
 
 const Weather: React.FC<Props> = ({ getLocationWeather }) => {
