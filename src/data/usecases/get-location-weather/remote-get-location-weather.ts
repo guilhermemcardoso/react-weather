@@ -11,7 +11,7 @@ export class RemoteGetLocationWeather implements GetLocationWeather {
         locationId
     }: GetLocationWeather.Params): Promise<LocationWeather[]> {
         const httpResponse = await this.httpGetClient.get({
-            url: `https://meta-weather.herokuapp.com/location/${locationId}`
+            url: `${process.env.REACT_APP_WEATHER_BASE_URL}location/${locationId}`
         });
 
         const data = httpResponse.data.consolidated_weather;

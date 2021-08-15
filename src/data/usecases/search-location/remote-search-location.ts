@@ -11,7 +11,7 @@ export class RemoteSearchLocation implements SearchLocation {
         query
     }: SearchLocation.Params): Promise<Location[]> {
         const httpResponse = await this.httpGetClient.get({
-            url: `https://meta-weather.herokuapp.com/location/?query=${query}`
+            url: `${process.env.REACT_APP_WEATHER_BASE_URL}location/?query=${query}`
         });
 
         const data = httpResponse.data.consolidated_weather;
