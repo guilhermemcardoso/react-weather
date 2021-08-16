@@ -1,7 +1,7 @@
 export type LocationWeather = {
     id: number;
     weatherStateName: string;
-    applicableDate: Date;
+    applicableDate: string;
     temp: number;
     maxTemp: number;
     minTemp: number;

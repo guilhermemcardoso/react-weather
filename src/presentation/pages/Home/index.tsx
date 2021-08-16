@@ -1,40 +1,71 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+
+import { ButtonContainer, Header, WeatherContainer, MainContainer, Footer } from "./styles";
+
 import { GetLocationWeather } from "../../../domain/usecases/get-location-weather";
 import { LocationWeather } from "../../../domain/models/location-weather";
 import { SearchLocation } from "../../../domain/usecases/search-location";
+import LocationButton from "../../components/LocationButton";
+import WeatherCard from "../../components/WeatherCard";
+import Loading from "../../components/Loading";
 
 type Props = {
   getLocationWeather: GetLocationWeather;
-  searchLocation: SearchLocation
+  searchLocation: SearchLocation;
 };
 
 const Weather: React.FC<Props> = ({ getLocationWeather }) => {
   const [weathers, setWeathers] = useState<LocationWeather[]>([]);
-
-  useEffect(() => {}, []);
+  const [selectedLocation, setSelectedLocation] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   async function handleClick(locationId: number) {
+    setLoading(true);
     const response = await getLocationWeather.get({ locationId });
+    setSelectedLocation(locationId);
+    setLoading(false);
     setWeathers(response);
   }
 
   return (
-    <div>
-      <h2>Weather</h2>
-      <div>
-        <button onClick={() => handleClick(742676)}>Lisboa</button>
-        <button onClick={() => handleClick(44418)}>Londres</button>
-        <button onClick={() => handleClick(2459115)}>Nova Iorque</button>
-        <button onClick={() => handleClick(455827)}>Sao Paulo</button>
-      </div>
-      {weathers.map((weather) => {
-        return (
-          <div key={weather.id}>
-            <small>{weather.applicableDate}</small>
-          </div>
-        );
-      })}
-    </div>
+    <MainContainer>
+      <Header>Weather</Header>
+      <ButtonContainer>
+        <LocationButton
+          isSelected={selectedLocation === 742676}
+          locationId={742676}
+          locationName={"Lisbon"}
+          onClick={handleClick}
+        />
+        <LocationButton
+          isSelected={selectedLocation === 44418}
+          locationId={44418}
+          locationName={"London"}
+          onClick={handleClick}
+        />
+        <LocationButton
+          isSelected={selectedLocation === 2459115}
+          locationId={2459115}
+          locationName={"New York"}
+          onClick={handleClick}
+        />
+        <LocationButton
+          isSelected={selectedLocation === 455827}
+          locationId={455827}
+          locationName={"São Paulo"}
+          onClick={handleClick}
+        />
+      </ButtonContainer>
+      <WeatherContainer>
+        {loading && <Loading />}
+        {!loading && weathers.map((weather) => {
+          return (
+            <WeatherCard weather={weather} />
+          );
+        })}
+      </WeatherContainer>
+      <Footer>Developed by Guilherme Cardoso - thanks to www.metaweather.com</Footer>
+    </MainContainer>
   );
 };
 
